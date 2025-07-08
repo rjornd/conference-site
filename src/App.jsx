@@ -1,0 +1,169 @@
+import { useEffect, useRef, useState } from 'react'
+import './mdggisStyle.css'
+import pnipulogo from './assets/pinpulogo.png'
+import prog1 from './assets/abcd.jpg'
+import prog2 from './assets/abce.jpg'
+
+const sections = [
+  {
+    title: 'ГОРНО-НЕФТЯНОЙ ФАКУЛЬТЕТ',
+    content: "Кафедра маркшейдерского дела, геодезии и геоинформционных систем",
+    image: pnipulogo,
+    bg: 'bc-gradient',
+  },
+  {
+    title: 'Конференция 2025',
+    content: 'Мы рады пригласить вас принять участие в профессиональной конференции, посвящённой обмену опытом в области оптимизации и повышения эффективности бизнес-процессов в горнодобывающей промышленности.',
+    //image: 
+    bg: '',
+  },
+  {
+    title: 'Цель мероприятия',
+    content: '✔️ Обсудить современные решения в управлении производством \n ✔️ Познакомиться с лучшими практиками внедрения цифровых технологий ведущих компаний отрасли \n ✔️ Изучить инновационные технологии для повышения операционной и экономической эффективности\n ✔️ Установить новые деловые контакты и найти возможности для сотрудничества',
+    //image: 
+    bg: 'bc-gradient',
+  },
+  {
+    title: 'Регистрация',
+    content: 'Просим подтвердить ваше участие в конференции, заполнив регистрационную форму по ссылке ниже',
+   // image: 
+    bg: '',
+  },
+]
+
+const galleryImages = [
+  prog1,
+  prog2,
+]
+
+const galleryCaptions = [
+  'ПО для АО "Еврохим"',
+  'ПО "3D Геология'
+]
+
+function ImageGallery({ style }) {
+  const [index, setIndex] = useState(0)
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setIndex(i => (i + 1) % galleryImages.length)
+    }, 9500)
+    return () => clearInterval(interval)
+  }, [])
+
+  return (
+    <div className="gallery-image-wrapper" style={style}>
+      <img
+        src={galleryImages[index]}
+        alt={galleryCaptions[index] || 'Gallery'}
+        className="gallery-image"
+        loading="lazy"
+      />
+      <div className="gallery-caption" style={{ marginTop: 12, fontSize: '1.1rem', color: '#444', textAlign: 'center', minHeight: 24 }}>
+        {galleryCaptions[index]}
+      </div>
+      <div className="gallery-controls">
+        {galleryImages.map((_, i) => (
+          <button
+            key={i}
+            className={`gallery-dot${i === index ? ' active' : ''}`}
+            onClick={() => setIndex(i)}
+            aria-label={`Go to image ${i + 1}`}
+          />
+        ))}
+      </div>
+    </div>
+  )
+}
+
+function Header() {
+  return (
+    <header className="main-header">
+      <nav className="main-nav">
+        <a href="#about" className="nav-link">О нас</a>
+        <a href="#contact" className="nav-link">Контакты</a>
+      </nav>
+    </header>
+  )
+}
+
+function App() {
+  const sectionRefs = useRef([])
+
+  useEffect(() => {
+    const handleScroll = () => {
+      sectionRefs.current.forEach((ref) => {
+        if (!ref) return
+        const rect = ref.getBoundingClientRect()
+        if (rect.top < window.innerHeight * 0.6 && rect.bottom > window.innerHeight * 0.2) {
+          ref.classList.add('in-view')
+        } else {
+          ref.classList.remove('in-view')
+        }
+      })
+    }
+    window.addEventListener('scroll', handleScroll)
+    handleScroll()
+    return () => window.removeEventListener('scroll', handleScroll)
+  }, [])
+
+  return (
+    <div>
+      <Header />
+      {sections.map((section, idx) => {
+        const inView = sectionRefs.current[idx]?.classList.contains('in-view')
+        return (
+          <section
+            key={idx}
+            ref={el => sectionRefs.current[idx] = el}
+            className={`section ${section.bg} ${inView ? 'in-view' : ''}`}
+          >
+            {section.image ? <img
+              src={section.image}
+              alt={section.title}
+              className="section-image"
+              loading="lazy"
+            /> : null}
+            <div className="section-title">{section.title}</div>
+            {idx === 2 ? (
+              <div className="section-content" style={{ textAlign: 'left', margin: '0 auto', maxWidth: 700 }}>
+          {String(section.content).split('\n').map((line, i) => (
+            <span key={i} style={{ display: 'block' }}>{line}</span>
+          ))}
+              </div>
+            ) : (
+              <div className="section-content">{section.content}</div>
+            )}
+            {idx === 0 && (
+              <div className="section-content" style={{ fontSize: '2.5rem' }}>
+          <p>Представляет</p>
+              </div>
+            )}
+            {idx === 1 && (
+              <ImageGallery
+          style={{ marginTop: 32 }}
+              />
+            )}
+            {idx === sections.length - 1 && (
+              <>
+          <button className="main-action-btn">Зарегистрироваться</button>
+          <div
+            className="section-content"
+            style={{
+              fontSize: '0.95rem',
+              color: '#888',
+              marginTop: 16,
+            }}
+          >
+           * Организационный взнос за участие не предусмотрен
+          </div>
+              </>
+            )}
+          </section>
+        )
+      })}
+    </div>
+  )
+}
+
+export default App
