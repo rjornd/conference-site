@@ -63,37 +63,6 @@
   background: linear-gradient(120deg, #f5f6fa 0%, #e3e6ee 100%);
 }
 
-@media (prefers-color-scheme: dark) {
-  .bc-gradient {
-    background: #23272f;
-    background: linear-gradient(120deg, #23272f 0%, #3a4252 100%);
-  }
-  body {
-    background: #181a20;
-    color: #e3e6ee;
-  }
-  .section-title {
-    color: #e3e6ee;
-    text-shadow: 0 2px 16px rgba(0,0,0,0.32);
-  }
-  .section-content {
-    color: #bfc9d9;
-  }
-  .main-header {
-    background: rgba(30,32,38,0.85);
-    box-shadow: 0 2px 16px rgba(0,0,0,0.18);
-    backdrop-filter: blur(12px);
-  }
-  .nav-link {
-    color: #e3e6ee;
-    background: rgba(30,32,38,0.18);
-  }
-  .nav-link:hover {
-    background: rgba(255,255,255,0.07);
-    color: #7bb6ff;
-  }
-}
-
 
 .section-image {
   width: 320px;
@@ -131,6 +100,8 @@ body {
   min-height: 100vh;
   overflow-x: hidden;
   scroll-snap-type: y mandatory;
+  background: #ffffff;
+  /* Светлый фон всегда, игнорируем prefers-color-scheme */
 }
 
 #root {
