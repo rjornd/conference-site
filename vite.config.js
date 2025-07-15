@@ -5,4 +5,5 @@ import react from '@vitejs/plugin-react'
 export default defineConfig({
   base: '/conference-site/', // например: /conference-site/
   plugins: [react()],
+  assetsInclude: ['**/*.docx']
 })

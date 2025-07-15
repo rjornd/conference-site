@@ -1,8 +1,10 @@
 import { useEffect, useRef, useState } from 'react'
 import './mdggisStyle.css'
 import pnipulogo from './assets/pinpulogo.png'
-import prog1 from './assets/abcd.jpg'
-import prog2 from './assets/abce.jpg'
+import log1 from './assets/mdggis.jpg'
+import log2 from './assets/ukk.jpg'
+import log3 from './assets/eurohim.jpg'
+import doc from './assets/conference_plan.docx'
 
 function YandexMap() {
   const mapRef = useRef(null);
@@ -44,7 +46,7 @@ function YandexMap() {
 const sections = [
   {
     title: 'ГОРНО-НЕФТЯНОЙ ФАКУЛЬТЕТ',
-    content: "Кафедра маркшейдерского дела, геодезии и геоинформционных систем",
+    content: "Кафедра маркшейдерского дела, геодезии и геоинформационных систем",
     image: pnipulogo,
     bg: 'bc-gradient',
   },
@@ -77,23 +79,45 @@ const sections = [
 ]
 
 const galleryImages = [
-  prog1,
-  prog2,
+  log1,
+  log2,
+  log3
 ]
 
 const galleryCaptions = [
-  'ПО для АО "Еврохим"',
-  'ПО "3D Геология'
+  'Кафедра "МДГиГИС"',
+  'ПАО "Уралкалий"',
+  'АО "Еврохим"'
 ]
 
 function ImageGallery({ style }) {
   const [index, setIndex] = useState(0)
+  const intervalRef = useRef(null)
+
+  const startInterval = () => {
+    // Очищаем предыдущий интервал, если он существует
+    if (intervalRef.current) {
+      clearInterval(intervalRef.current)
+    }
+    // Создаем новый интервал
+    intervalRef.current = setInterval(() => {
+      setIndex(i => (i + 1) % galleryImages.length)
+    }, 6500)
+  }
+
+  // Функция для ручного переключения с перезапуском интервала
+  const handleManualChange = (newIndex) => {
+    setIndex(newIndex)
+    startInterval() // Перезапускаем интервал
+  }
 
   useEffect(() => {
-    const interval = setInterval(() => {
-      setIndex(i => (i + 1) % galleryImages.length)
-    }, 9500)
-    return () => clearInterval(interval)
+    startInterval() // Запускаем интервал при монтировании
+    return () => {
+      if (intervalRef.current) {
+        clearInterval(intervalRef.current)
+      }
+    }
   }, [])
 
   return (
@@ -103,6 +127,8 @@ function ImageGallery({ style }) {
         alt={galleryCaptions[index] || 'Gallery'}
         className="gallery-image"
         loading="lazy"
+        onClick={() => handleManualChange((index + 1) % galleryImages.length)}
+        style={{ cursor: 'pointer' }}
       />
       <div className="gallery-caption" style={{ marginTop: 12, fontSize: '1.1rem', color: '#444', textAlign: 'center', minHeight: 24 }}>
         {galleryCaptions[index]}
@@ -112,7 +138,7 @@ function ImageGallery({ style }) {
           <button
             key={i}
             className={`gallery-dot${i === index ? ' active' : ''}`}
-            onClick={() => setIndex(i)}
+            onClick={() => handleManualChange(i)}
             aria-label={`Go to image ${i + 1}`}
           />
         ))}
@@ -125,7 +151,20 @@ function Header() {
   return (
     <header className="main-header">
       <nav className="main-nav">
-        <a href="#about" className="nav-link">О нас</a>
+        <a
+          href={doc}
+          className="nav-link"
+          download
+          onClick={e => {
+            // Для совместимости: если браузер не поддерживает download, открываем файл
+            if (!('download' in document.createElement('a'))) {
+              window.open(doc, '_blank', 'noopener,noreferrer')
+              e.preventDefault()
+            }
+          }}
+        >
+          Программа мероприятия
+        </a>
         <a href="#contact" className="nav-link">Контакты</a>
       </nav>
     </header>
@@ -170,7 +209,8 @@ function App() {
               loading="lazy"
             /> : null}
             <div className="section-title">{section.title}</div>
-            {idx === 2 ? (
+           
+             {idx === 2 ? (
               <div className="section-content" style={{ textAlign: 'left', margin: '0 auto', maxWidth: 700 }}>
           {String(section.content).split('\n').map((line, i) => (
             <span key={i} style={{ display: 'block' }}>{line}</span>
@@ -179,6 +219,21 @@ function App() {
             ) : (
               <div className="section-content">{section.content}</div>
             )}
+            { idx === 0 && (
+              <div className="section-content" style={{ fontSize: '2.5rem' }}>
+              <p>Представляет</p>
+              </div>
+            )}
+            
+            {idx === 1 && (
+              <div>
+                <div className="section-content"> Участники </div>
+              <ImageGallery
+              style={{ marginTop: 10 }}
+              />
+              </div>
+            )}
+
             {section.mapSection && (
               <div
           style={{
@@ -213,19 +268,10 @@ function App() {
           <YandexMap />
               </div>
             )}
-            {idx === 0 && (
-              <div className="section-content" style={{ fontSize: '2.5rem' }}>
-          <p>Представляет</p>
-              </div>
-            )}
-            {idx === 1 && (
-              <ImageGallery
-          style={{ marginTop: 32 }}
-              />
-            )}
+            
             {idx === sections.length - 2 && (
               <>
-          <button className="main-action-btn">Зарегистрироваться</button>
+          <button className="main-action-btn" onClick={() => window.open('https://t.me/gartchiza90', '_blank', 'noopener,noreferrer')}>Зарегистрироваться</button>
           <div
             className="section-content"
             style={{
