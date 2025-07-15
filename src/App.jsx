@@ -4,6 +4,43 @@ import pnipulogo from './assets/pinpulogo.png'
 import prog1 from './assets/abcd.jpg'
 import prog2 from './assets/abce.jpg'
 
+function YandexMap() {
+  const mapRef = useRef(null);
+
+  useEffect(() => {
+    // Prevent duplicate script injection
+    if (!window.ymaps) {
+      const script = document.createElement('script');
+      script.src = 'https://api-maps.yandex.ru/2.1/?lang=ru_RU';
+      script.async = true;
+      document.body.appendChild(script);
+      script.onload = initMap;
+      return () => {
+        document.body.removeChild(script);
+      };
+    } else {
+      initMap();
+    }
+
+    function initMap() {
+      window.ymaps.ready(() => {
+        // Remove previous map instance if exists
+        if (mapRef.current && mapRef.current.innerHTML) {
+          mapRef.current.innerHTML = '';
+        }
+        new window.ymaps.Map(mapRef.current, {
+          center: [58.008295, 56.240250],
+          zoom: 17,
+        });
+      });
+    }
+  }, []);
+
+  return (
+    <div ref={mapRef} style={{ width: '100%', height: '400px', borderRadius: '12px' }}></div>
+  );
+}
+
 const sections = [
   {
     title: 'ГОРНО-НЕФТЯНОЙ ФАКУЛЬТЕТ',
@@ -28,7 +65,15 @@ const sections = [
     content: 'Просим подтвердить ваше участие в конференции, заполнив регистрационную форму по ссылке ниже',
    // image: 
     bg: '',
+    
   },
+  {
+    title: 'Как добраться',
+    content: 'Адрес: Пермь, Комсомольский проспект, 29',
+    bg: 'bc-gradient',
+    mapSection: true, // специальный флаг для секции с картой
+  },
+  
 ]
 
 const galleryImages = [
@@ -134,6 +179,40 @@ function App() {
             ) : (
               <div className="section-content">{section.content}</div>
             )}
+            {section.mapSection && (
+              <div
+          style={{
+            width: '100%',
+            maxWidth: '800px',
+            margin: '20px auto',
+            position: 'relative',
+          }}
+              >
+          <div
+            style={{
+              position: 'absolute',
+              top: 0,
+              left: 0,
+              width: '100%',
+              height: '100%',
+              zIndex: 2,
+              cursor: 'grab',
+              background: 'transparent',
+            }}
+            tabIndex={0}
+            aria-label="Для взаимодействия с картой кликните"
+            onClick={e => {
+              e.currentTarget.style.pointerEvents = 'none';
+            }}
+            onKeyDown={e => {
+              if (e.key === 'Enter' || e.key === ' ') {
+                e.currentTarget.style.pointerEvents = 'none';
+              }
+            }}
+          />
+          <YandexMap />
+              </div>
+            )}
             {idx === 0 && (
               <div className="section-content" style={{ fontSize: '2.5rem' }}>
           <p>Представляет</p>
@@ -144,7 +223,7 @@ function App() {
           style={{ marginTop: 32 }}
               />
             )}
-            {idx === sections.length - 1 && (
+            {idx === sections.length - 2 && (
               <>
           <button className="main-action-btn">Зарегистрироваться</button>
           <div
@@ -155,7 +234,7 @@ function App() {
               marginTop: 16,
             }}
           >
-           * Организационный взнос за участие не предусмотрен
+            * Организационный взнос за участие не предусмотрен
           </div>
               </>
             )}
