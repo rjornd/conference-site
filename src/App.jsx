@@ -4,7 +4,7 @@ import pnipulogo from './assets/pinpulogo.png'
 import log1 from './assets/mdggis.jpg'
 import log2 from './assets/ukk.jpg'
 import log3 from './assets/eurohim.jpg'
-import doc from './assets/conference_plan.docx'
+import doc from './assets/conference.pdf'
 
 function YandexMap() {
   const mapRef = useRef(null);
@@ -64,7 +64,7 @@ const sections = [
   },
   {
     title: 'Регистрация',
-    content: 'Просим подтвердить ваше участие в конференции, заполнив регистрационную форму по ссылке ниже',
+    content: 'Просим подтвердить ваше участие в конференции, связавшись с организаторами по ссылке ниже',
    // image: 
     bg: '',
     
@@ -154,13 +154,9 @@ function Header() {
         <a
           href={doc}
           className="nav-link"
-          download
           onClick={e => {
-            // Для совместимости: если браузер не поддерживает download, открываем файл
-            if (!('download' in document.createElement('a'))) {
               window.open(doc, '_blank', 'noopener,noreferrer')
               e.preventDefault()
-            }
           }}
         >
           Программа мероприятия
@@ -220,8 +216,8 @@ function App() {
               <div className="section-content">{section.content}</div>
             )}
             { idx === 0 && (
-              <div className="section-content" style={{ fontSize: '2.5rem' }}>
-              <p>Представляет</p>
+              <div className="section-content">
+              <p>Приглашает принять участие</p>
               </div>
             )}
             
@@ -271,17 +267,24 @@ function App() {
             
             {idx === sections.length - 2 && (
               <>
+              <div></div>
           <button className="main-action-btn" onClick={() => window.open('https://t.me/gartchiza90', '_blank', 'noopener,noreferrer')}>Зарегистрироваться</button>
           <div
             className="section-content"
             style={{
               fontSize: '0.95rem',
               color: '#888',
-              marginTop: 16,
+              marginTop: 20,
             }}
           >
             * Организационный взнос за участие не предусмотрен
           </div>
+           <button className="small-action-btn"
+           onClick={e => {
+              window.open(doc, '_blank', 'noopener,noreferrer')
+              e.preventDefault()
+          }}
+           >Получить программу</button>
               </>
             )}
           </section>

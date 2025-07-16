@@ -10,6 +10,9 @@
   --header-bg: rgba(44, 62, 80, 0.95);
 }
 
+
+
+
 /* Main action button for call-to-action */
 .main-action-btn {
   margin-top: 2rem;
@@ -26,7 +29,20 @@
   outline: none;
 }
 
-.main-action-btn:hover, .main-action-btn:focus {
+.small-action-btn {
+  font-size: 0.8em;
+  padding: 0.6em 1.5em;
+  color: #fff;
+  background: linear-gradient(90deg, var(--primary) 0%, var(--primary-light) 100%);
+  border: none;
+  border-radius: 2em;
+  box-shadow: 0 2px 16px rgba(0,188,212,0.15);
+  cursor: pointer;
+  transition: background 0.3s, box-shadow 0.3s, transform 0.2s;
+  outline: none;
+}
+
+.main-action-btn:hover, .main-action-btn:focus, .small-action-btn:hover, .small-action-btn:focus {
   background: linear-gradient(90deg, var(--primary-dark) 0%, var(--primary) 100%);
   box-shadow: 0 4px 24px rgba(0,188,212,0.25);
   transform: translateY(-2px) scale(1.03);
@@ -100,6 +116,8 @@
   background: none !important;
   background-color: transparent !important;
 }
+
+
 
 /* Smooth scroll */
 html {
@@ -223,7 +241,7 @@ body {
   z-index: 100;
   background: var(--header-bg);
   box-shadow: 0 2px 16px rgba(0,0,0,0.1);
-  clip-path: polygon(0 0, 100% 0, 100% 100%, calc(100% - 320px) 100%, calc(100% - 340px) 50%, 0 50%);
+  clip-path: polygon(0 0, 100% 0, 100% 100%, calc(100% - 330px) 100%, calc(100% - 350px) 50%, 0 50%);
   backdrop-filter: blur(12px);
   padding: 0.5rem 0;
 }
@@ -233,10 +251,10 @@ body {
   justify-content: flex-end;
   align-items: center;
   gap: 0.1rem;
-  width: 100%;
+  width: calc(100hv - 4rem);
   max-width: none;
   margin: 0;
-  padding: 0 1.2rem 0 0;
+  padding: 0 2rem;
 }
 
 .nav-link {
@@ -244,8 +262,7 @@ body {
   font-weight: 500;
   color: #ffffff;
   text-decoration: none;
-  padding: 0.2em 0.7em;
-  margin-right: 0.5em;
+  padding: 0.2em 0.6em;
   border-radius: 1.2em;
   background: rgba(255, 255, 255, 0);
   transition: all 0.3s ease;
@@ -254,4 +271,37 @@ body {
 .nav-link:hover {
   background: rgba(255, 255, 255, 0.15);
   color: var(--primary-light);
+}
+
+@media (min-width: 1024px) {
+  body {
+    font-size: 18px; /* Базовый размер текста больше на десктопе */
+  }
+
+  .section-title {
+    font-size: 2.4rem;
+  }
+  
+  .section-content {
+    font-size: 1.7rem;
+    max-width: 900px;
+  }
+
+  .main-action-btn {
+    font-size: 1.25rem;
+    padding: 1em 2.5em;
+  }
+
+  .small-action-btn {
+    font-size: 1em;
+}
+
+  .nav-link {
+    font-size: 1.1rem;
+  }
+
+  .main-header {
+    clip-path: polygon(0 0, 100% 0, 100% 100%, calc(100% - 360px) 100%, calc(100% - 380px) 50%, 0 50%);
+  }
+
 }
