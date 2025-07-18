@@ -45,24 +45,28 @@ function YandexMap() {
 
 const sections = [
   {
+    type: 'header',
     title: 'ГОРНО-НЕФТЯНОЙ ФАКУЛЬТЕТ',
     content: "Кафедра маркшейдерского дела, геодезии и геоинформационных систем",
     image: pnipulogo,
     bg: 'bc-gradient',
   },
   {
+    type: 'participants',
     title: 'Конференция 2025',
     content: 'Мы рады пригласить вас принять участие в профессиональной конференции, посвящённой обмену опытом в области оптимизации и повышения эффективности бизнес-процессов в горнодобывающей промышленности.',
     //image: 
     bg: '',
   },
   {
+    type: 'purpose',
     title: 'Цель мероприятия',
     content: '✔️ Обсудить современные решения в управлении производством \n ✔️ Познакомиться с лучшими практиками внедрения цифровых технологий ведущих компаний отрасли \n ✔️ Изучить инновационные технологии для повышения операционной и экономической эффективности\n ✔️ Установить новые деловые контакты и найти возможности для сотрудничества',
     //image: 
     bg: 'bc-gradient',
   },
   {
+    type: 'registration',
     title: 'Регистрация',
     content: 'Просим подтвердить ваше участие в конференции, связавшись с организаторами по ссылке ниже',
    // image: 
@@ -70,12 +74,18 @@ const sections = [
     
   },
   {
+    type: 'location',
     title: 'Как добраться',
     content: 'Адрес: Пермь, Комсомольский проспект, 29',
     bg: 'bc-gradient',
     mapSection: true, // специальный флаг для секции с картой
   },
-  
+  {
+    type: 'contact',
+    title: 'Контакты',
+    content: 'Свяжитесь с нами для получения дополнительной информации',
+    bg: '',
+  } 
 ]
 
 const galleryImages = [
@@ -167,6 +177,45 @@ function Header() {
   )
 }
 
+function MapSection(section) {
+  return section.mapSection ? (
+    (
+    <div
+    style={{
+      width: '100%',
+      maxWidth: '800px',
+      margin: '20px auto',
+      position: 'relative',
+    }}
+      >
+  <div
+    style={{
+      position: 'absolute',
+      top: 0,
+      left: 0,
+      width: '100%',
+      height: '100%',
+      zIndex: 2,
+      cursor: 'grab',
+      background: 'transparent',
+    }}
+    tabIndex={0}
+    aria-label="Для взаимодействия с картой кликните"
+    onClick={e => {
+      e.currentTarget.style.pointerEvents = 'none';
+    }}
+    onKeyDown={e => {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.currentTarget.style.pointerEvents = 'none';
+      }
+    }}
+  />
+  <YandexMap />
+      </div>
+  )) : null
+}
+
+
 function App() {
   const sectionRefs = useRef([])
 
@@ -197,6 +246,7 @@ function App() {
             key={idx}
             ref={el => sectionRefs.current[idx] = el}
             className={`section ${section.bg} ${inView ? 'in-view' : ''}`}
+            id={section.type}
           >
             {section.image ? <img
               src={section.image}
@@ -206,22 +256,23 @@ function App() {
             /> : null}
             <div className="section-title">{section.title}</div>
            
-             {idx === 2 ? (
+             {section.type === 'purpose' ? (
               <div className="section-content" style={{ textAlign: 'left', margin: '0 auto', maxWidth: 700 }}>
           {String(section.content).split('\n').map((line, i) => (
             <span key={i} style={{ display: 'block' }}>{line}</span>
           ))}
               </div>
-            ) : (
+             ) : (
               <div className="section-content">{section.content}</div>
             )}
-            { idx === 0 && (
+            
+            {section.type === 'header' && (
               <div className="section-content">
               <p>Приглашает принять участие</p>
               </div>
             )}
             
-            {idx === 1 && (
+            {section.type === 'participants' && (
               <div>
                 <div className="section-content"> Участники </div>
               <ImageGallery
@@ -230,42 +281,9 @@ function App() {
               </div>
             )}
 
-            {section.mapSection && (
-              <div
-          style={{
-            width: '100%',
-            maxWidth: '800px',
-            margin: '20px auto',
-            position: 'relative',
-          }}
-              >
-          <div
-            style={{
-              position: 'absolute',
-              top: 0,
-              left: 0,
-              width: '100%',
-              height: '100%',
-              zIndex: 2,
-              cursor: 'grab',
-              background: 'transparent',
-            }}
-            tabIndex={0}
-            aria-label="Для взаимодействия с картой кликните"
-            onClick={e => {
-              e.currentTarget.style.pointerEvents = 'none';
-            }}
-            onKeyDown={e => {
-              if (e.key === 'Enter' || e.key === ' ') {
-                e.currentTarget.style.pointerEvents = 'none';
-              }
-            }}
-          />
-          <YandexMap />
-              </div>
-            )}
+            {section.type === 'location' && (MapSection(section))}
             
-            {idx === sections.length - 2 && (
+            {section.type === 'registration' && (
               <>
               <div></div>
           <button className="main-action-btn" onClick={() => window.open('https://t.me/gartchiza90', '_blank', 'noopener,noreferrer')}>Зарегистрироваться</button>
@@ -286,6 +304,23 @@ function App() {
           }}
            >Получить программу</button>
               </>
+            )}
+
+            {section.type === 'contact' && (
+             <div className="section-content" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '12px' }}>
+              <p style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                <i className="fab fa-telegram" style={{ fontSize: '1.5rem', color: '#0088cc' }}></i>
+                <a href="https://t.me/gartchiza90" target="_blank" rel="noopener noreferrer" style={{ color: '#0088cc', textDecoration: 'none' }}>
+                  @gartchiza90
+                </a>
+              </p>
+              <p style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                <i className="fas fa-envelope" style={{ fontSize: '1.5rem', color: '#444' }}></i>
+                <a href="mailto:gartanastasiya90@gmail.com" style={{ color: '#444', textDecoration: 'none' }}>
+                  gartanastasiya90@gmail.com
+                </a>
+              </p>
+            </div>
             )}
           </section>
         )
