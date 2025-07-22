@@ -54,14 +54,14 @@ const sections = [
   {
     type: 'participants',
     title: 'Конференция 2025',
-    content: 'Мы рады пригласить вас принять участие в профессиональной конференции, посвящённой обмену опытом в области оптимизации и повышения эффективности бизнес-процессов в горнодобывающей промышленности.',
+    content: 'Мы рады пригласить вас принять участие в профессиональной конференции пользователей программных продуктов кафедры МДГиГИС, посвящённой обмену опытом в области оптимизации и повышения эффективности бизнес-процессов в горнодобывающей промышленности',
     //image: 
     bg: '',
   },
   {
     type: 'purpose',
     title: 'Цель мероприятия',
-    content: '✔️ Обсудить современные решения в управлении производством \n ✔️ Познакомиться с лучшими практиками внедрения цифровых технологий ведущих компаний отрасли \n ✔️ Изучить инновационные технологии для повышения операционной и экономической эффективности\n ✔️ Установить новые деловые контакты и найти возможности для сотрудничества',
+    content: '✔️ Обсудить современные решения в управлении производством \n ✔️ Познакомиться с лучшими практиками внедрения цифровых технологий кафедры на площадках ведущих компаний отрасли \n ✔️ Изучить инновационные технологии для повышения операционной и экономической эффективности\n ✔️ Установить новые деловые контакты и найти возможности для сотрудничества',
     //image: 
     bg: 'bc-gradient',
   },
@@ -75,8 +75,8 @@ const sections = [
   },
   {
     type: 'location',
-    title: 'Как добраться',
-    content: 'Адрес: Пермь, Комсомольский проспект, 29',
+    title: 'Дата и место проведения',
+    content: '11-12 сентября 2025 г', 
     bg: 'bc-gradient',
     mapSection: true, // специальный флаг для секции с картой
   },
@@ -180,6 +180,7 @@ function Header() {
 function MapSection(section) {
   return section.mapSection ? (
     (
+      
     <div
     style={{
       width: '100%',
@@ -188,6 +189,9 @@ function MapSection(section) {
       position: 'relative',
     }}
       >
+        <div
+       className="section-content"
+      >г. Пермь, Комсомольский проспект, 29, кафедра МДГиГИС Пермского Политеха</div>
   <div
     style={{
       position: 'absolute',
@@ -213,6 +217,7 @@ function MapSection(section) {
   <YandexMap />
       </div>
   )) : null
+  
 }
 
 
@@ -257,10 +262,15 @@ function App() {
             <div className="section-title">{section.title}</div>
            
              {section.type === 'purpose' ? (
-              <div className="section-content" style={{ textAlign: 'left', margin: '0 auto', maxWidth: 700 }}>
+              <div className="section-content-small" style={{ textAlign: 'left', margin: '0 auto'}}>
           {String(section.content).split('\n').map((line, i) => (
             <span key={i} style={{ display: 'block' }}>{line}</span>
           ))}
+          <div className="section-content"
+          style={{marginTop: 20, textAlign: 'left'}}
+          >
+            Мы уверены, что наш опыт разработки и внедрения программных решений для добывающей отрасли будет ценным вкладом в обсуждение, а участие в конференции поможет найти ответы на актуальные вопросы вашего предприятия
+          </div>
               </div>
              ) : (
               <div className="section-content">{section.content}</div>
@@ -268,7 +278,7 @@ function App() {
             
             {section.type === 'header' && (
               <div className="section-content">
-              <p>Приглашает принять участие</p>
+              <p>Предлагает принять участие в конференции</p>
               </div>
             )}
             
@@ -297,6 +307,7 @@ function App() {
           >
             * Организационный взнос за участие не предусмотрен
           </div>
+          
            <button className="small-action-btn"
            onClick={e => {
               window.open(doc, '_blank', 'noopener,noreferrer')
@@ -305,6 +316,7 @@ function App() {
            >Получить программу</button>
               </>
             )}
+            
 
             {section.type === 'contact' && (
              <div className="section-content" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '12px' }}>
@@ -319,6 +331,12 @@ function App() {
                 <a href="mailto:gartanastasiya90@gmail.com" style={{ color: '#444', textDecoration: 'none' }}>
                   gartanastasiya90@gmail.com
                 </a>
+              </p>
+              <p>
+                cот.: +7-919-492-44-58
+              </p>
+               <p>
+                Гарт Анастасия Андреевна, менеджер по работе с клиентами
               </p>
             </div>
             )}

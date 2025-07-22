@@ -87,6 +87,18 @@
   transition: opacity 0.8s cubic-bezier(0.4,0,0.2,1), transform 0.8s cubic-bezier(0.4,0,0.2,1);
 }
 
+.section-content-small {
+  font-size: 1.2rem;
+  max-width: 700px;
+  color: var(--text-secondary);
+  text-align: center;
+  margin-bottom: 2rem;
+  opacity: 0;
+  transform: translateY(40px);
+  transition: opacity 0.8s cubic-bezier(0.4,0,0.2,1), transform 0.8s cubic-bezier(0.4,0,0.2,1);
+}
+
+
 .bc-gradient {
   background: var(--background-alt);
 }
@@ -222,7 +234,8 @@ body {
 }
 
 .section.in-view .section-title,
-.section.in-view .section-content {
+.section.in-view .section-content,
+.section.in-view .section-content-small{
   opacity: 1;
   transform: translateY(0);
 }
@@ -284,6 +297,11 @@ body {
   
   .section-content {
     font-size: 1.7rem;
+    max-width: 900px;
+  }
+
+  .section-content-small {
+    font-size: 1.5rem;
     max-width: 900px;
   }
 
